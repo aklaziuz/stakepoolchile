@@ -39,7 +39,26 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
+    "@nuxtjs/firebase",
   ],
+
+  firebase: {
+    config: {
+      apiKey: "AIzaSyDsf31JGGS0oJIXQFOALPa7p6sb3Z8GSfg",
+      authDomain: "loginstake-a682f.firebaseapp.com",
+      projectId: "loginstake-a682f",
+      storageBucket: "loginstake-a682f.appspot.com",
+      messagingSenderId: "712551582232",
+      appId: "1:712551582232:web:f3d4ca143132efe4f6d16d",
+      measurementId: "G-5PV9M9C9XH",
+    },
+    services: {
+      auth: {
+        onAuthStateChangedMutation: "ON_AUTH_STATE_CHANGED_MUTATION",
+        onAuthStateChangedAction: "onAuthStateChangedAction",
+      },
+    },
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
