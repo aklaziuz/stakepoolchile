@@ -1,118 +1,166 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
+  <div>
     >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
+
+    <v-app-bar absolute color="transparent" flat>
+      <v-toolbar-title>Chile Stake Po</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-app-bar-nav-icon @click.stop="cerrar"></v-app-bar-nav-icon>
+
+      <v-btn icon @click.stop="cerrar2">
+        <v-icon>mdi-repeat</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-main>
-      <v-container>
-        <Nuxt />
-      </v-container>
-    </v-main>
+
+    <!-- <div class="cardano grande">Cardano</div> -->
+
+    <v-container style="height: auto">
+      <Nuxt />
+    </v-container>
+
     <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
+      v-model="drawer"
+      color="transparent"
+      style="width: 95%; height: 95%; margin: 30px 0px 0px 30px"
+      class="container"
+      transition="v-slide-x-transition"
+      absolute
       temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer
-      :absolute="!fixed"
       app
-    >
+      ><menufondo ref="refcomfondo" @cerrarMenu="cerrar"> </menufondo>
+    </v-navigation-drawer>
+
+    <v-navigation-drawer
+      v-model="drawer2"
+      transition="fade-transition"
+      color="transparent"
+      style="width: 95%; height: 95%; margin: 30px 0px 0px 30px"
+      class="container"
+      absolute
+      temporary
+      right
+      app
+      ><authfondo></authfondo>
+    </v-navigation-drawer>
+    <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
-  </v-app>
+  </div>
 </template>
-
 <script>
+import { gsap } from "gsap";
+import menufondo from "~/components/menu-fondo.vue";
+import authfondo from "~/components/AuthFondo.vue";
+
 export default {
-  name: 'DefaultLayout',
-  data () {
+  name: "DefaultLayout",
+  components: { menufondo, authfondo },
+
+  data() {
     return {
-      clipped: false,
       drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    }
-  }
-}
+      drawer2: false,
+      controlaAbierto: false,
+    };
+  },
+  mounted() {
+    /*  window.addEventListener("scroll", this.handleScroll); */
+
+    /*  gsap.fromTo(
+      ".cardano",
+      {
+        duration: 4,
+        opacity: 0,
+        x: "5%",
+      },
+      { duration: 1.5, opacity: 1, x: 0, ease: "power3.inOut", delay: 2 }
+    ); */
+    const tl = gsap.timeline();
+    tl.from(".cardano", {
+      duration: 2,
+      ease: "elastic.out(1, 0.3)",
+      yoyo: true,
+      y: 500,
+      x: -300,
+    });
+    /* tl.to(".cardano", { delay:2,duration: 1, ease: "elastic.out(1, 0.3)",  , yoyo:true}); */
+    tl.to(".cardano", {
+      delay: 1.5,
+      duration: 1,
+      y: 20,
+      repeat: -1,
+      yoyo: true,
+    });
+    /*  gsap.fromTo(
+      ".cardano",
+      {
+        duration: 2,
+        opacity: 0,
+        x: "-100%",
+      },
+      { duration: 1.5, opacity: 1, x: 0, ease: "power3.inOut", delay: 0.5 }
+    );   */
+  },
+  methods: {
+    cerrar() {
+      this.drawer = !this.drawer;
+      this.activar();
+    },
+
+    cerrar2() {
+      this.drawer2 = !this.drawer2;
+    },
+
+    activar() {
+      this.$refs.refcomfondo.mover();
+      // eslint-disable-next-line no-console
+      console.log("activado");
+    },
+  },
+};
 </script>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Arya:wght@700&family=Comfortaa:wght@300&family=Gowun+Dodum&family=Josefin+Slab:wght@500&family=Poiret+One&family=Ubuntu:wght@300&display=swap");
+
+.cardano {
+  font-family: "Comfortaa", cursive;
+  color: antiquewhite;
+}
+.grande {
+  font-size: 100px;
+}
+
+.chica {
+  font-size: 30px;
+}
+.derty {
+  width: 1000px;
+  height: 10px;
+  background-color: red;
+}
+
+.poner {
+  margin: 20px 30px 50px 30px;
+}
+.arriba {
+  margin-top: 100px;
+}
+
+.container {
+  /*  background-color: rgba(255, 255, 255, 0.1);
+   height: 95%;
+  backdrop-filter: blur(30 px);
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  border-radius: 5px; */
+  /* width: 95%; */
+  /* margin: 0 auto; */
+
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: solid 1px rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(18px);
+}
+</style>
